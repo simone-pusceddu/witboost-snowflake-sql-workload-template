@@ -1,0 +1,31 @@
+from airflow import DAG, settings, secrets
+from airflow.utils.dates import days_ago
+from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from datetime import timedelta
+import os
+import requests
+import json
+
+default_args = {
+    'owner': 'agilelab',
+    'start_date': days_ago(1),
+    'depends_on_past': False
+}
+
+### 'os.path.basename(__file__).replace(".py", "")' uses the file name secrets-manager.py for a DAG ID of secrets-manager
+with DAG(
+        dag_id=os.path.basename(__file__).replace(".py", ""),
+        default_args=default_args,
+        dagrun_timeout=timedelta(hours=2),
+        start_date=days_ago(1),
+        schedule_interval='${{ values.scheduleCron }}', 
+        is_paused_upon_creation=False
+) as dag:
+    snowflake_select = SnowflakeOperator(
+        task_id="snowflake_select",
+        sql="${{ values.destinationSql }}".split("/")[-1],
+        snowflake_conn_id="snowflake",
+        schema='public',
+    )
+
+    snowflake_select

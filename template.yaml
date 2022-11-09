@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: aws-workload-airflow-template.1
-  title: Workload Airflow MWAA Template
+  name: aws-workload-airflow-template-sfonly.1
+  title: Workload Airflow MWAA Template snoflake only
   description: Create a repository containing the definition of a Airflow Workload
   mesh:
     icon: https://cwiki.apache.org/confluence/download/attachments/145723561/airflow_transparent.png?api=v2
@@ -100,10 +100,6 @@ spec:
         - sourceBucket
         - destinationBucket
       properties:
-        sourceBucket: 
-          title: Source s3 dag location
-          type: string
-          description: Specify only the name of the source bucket
         destinationBucket:
           title: Destination s3 dag location
           type: string
@@ -112,10 +108,6 @@ spec:
           title: Cron expression defining schedule
           type: string
           description: Cron expression defining schedule on which the job will trigger
-        sourceDag:
-          title: Source Dag path
-          type: string
-          description: Path to the source dag like path/to/the/file
         destinationDag:
           title: Destination Dag path
           type: string
@@ -124,10 +116,6 @@ spec:
           title: Destination of the snowflake sql file
           type: string
           description: It will be put in the destination bucket on the location you specify like path/to/the/file
-        connectionName:
-          title: Airbyte name of the connection
-          type: string
-          description: Insert the name of the connection for the Airbyte
 
     - title: Choose a location
       required:
@@ -163,13 +151,10 @@ spec:
           developmentGroup: '${{ parameters.developmentGroup }}'
           dependsOn: '${{ parameters.dependsOn }}'
           readsFrom: '${{ parameters.readsFrom }}'
-          sourceBucket: '${{ parameters.sourceBucket }}'
           destinationBucket: '${{ parameters.destinationBucket }}'
-          sourceDag: '${{ parameters.sourceDag }}'
           destinationDag: '${{ parameters.destinationDag }}'
           scheduleCron: '${{ parameters.scheduleCron }}'
           destinationSql: '${{ parameters.destinationSql }}'
-          connectionName: '${{ parameters.connectionName }}'
           useCaseTemplateId: urn:dmb:utm:aws-airflow-workload-template:0.0.0
           infrastructureTemplateId: urn:dmb:itm:aws-workload-airflow-provisioner:0
           useCaseTemplateVersion: 0.0.0
