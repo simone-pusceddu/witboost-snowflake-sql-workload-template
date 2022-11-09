@@ -97,7 +97,6 @@ spec:
 
     - title: Airflow infrastructure details
       required:
-        - sourceBucket
         - destinationBucket
       properties:
         destinationBucket:
