@@ -8,7 +8,8 @@ metadata:
     backstage.io/techdocs-ref: dir:.
   tags:
     - aws
-    - airflow
+    - sql
+    - snowflake
     - workload
 spec:
   type: workload
@@ -33,8 +34,3 @@ spec:
     tags: []
     readsFrom: {% if values.readsFrom | length > 0 %}{% for i in values.readsFrom %}
       - ${{ i }}{% endfor %}{% else %}[]{% endif %}
-    specific: 
-      destinationBucket: ${{ values.destinationBucket }}
-      scheduleCron: ${{ values.scheduleCron }}
-      destinationDag: ${{ values.destinationDag }}
-      destinationSql: ${{ values.destinationSql }}
