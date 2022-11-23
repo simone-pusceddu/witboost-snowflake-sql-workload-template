@@ -1,4 +1,4 @@
-insert into ${{ values.domain }}.${{ values.identifier.split(".")[1] }}_${{ values.identifier.split(".")[2] }}.output_table(
+insert into ${{ values.identifier.split(".")[0] }}.${{ values.identifier.split(".")[1] }}_${{ values.identifier.split(".")[2] }}.output_table(
     date,
     location_key,
     new_confirmed,
@@ -11,4 +11,4 @@ insert into ${{ values.domain }}.${{ values.identifier.split(".")[1] }}_${{ valu
     cumulative_tested
 ) select date, location_key, new_confirmed, new_deceased, new_recovered, new_tested,
             cumulative_confirmed, cumulative_deceased, cumulative_recovered, cumulative_tested 
-from ${{ values.domain }}.${{ values.identifier.split(".")[1] }}_${{ values.identifier.split(".")[2] }}.google_covid_dataset;
+from ${{ values.identifier.split(".")[0] }}.${{ values.identifier.split(".")[1] }}_${{ values.identifier.split(".")[2] }}.google_covid_dataset;
