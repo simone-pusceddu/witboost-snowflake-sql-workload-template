@@ -1,14 +1,11 @@
 insert into ${{ values.identifier.split(".")[0] }}.${{ values.identifier.split(".")[1].split("-").join("") }}_${{ values.identifier.split(".")[2] }}.output_table(
     date,
     location_key,
-    new_confirmed,
-    new_deceased,
-    new_recovered,
-    new_tested,
-    cumulative_confirmed,
-    cumulative_deceased,
-    cumulative_recovered,
-    cumulative_tested
-) select date, location_key, new_confirmed, new_deceased, new_recovered, new_tested,
-            cumulative_confirmed, cumulative_deceased, cumulative_recovered, cumulative_tested 
-from ${{ values.identifier.split(".")[0] }}.${{ values.identifier.split(".")[1].split("-").join("") }}_${{ values.identifier.split(".")[2] }}.google_covid_dataset;
+    new_persons_vaccinated,
+    new_persons_fully_vaccinated,
+    new_vaccine_doses_administered,
+    cumulative_persons_vaccinated,
+    cumulative_persons_fully_vaccinated,
+    cumulative_vaccine_doses_administered
+) select date, location_key, new_persons_vaccinated, new_persons_fully_vaccinated, new_vaccine_doses_administered, cumulative_persons_vaccinated,
+            cumulative_persons_fully_vaccinated, cumulative_vaccine_doses_administered from ${{ values.identifier.split(".")[0] }}.${{ values.identifier.split(".")[1].split("-").join("") }}_${{ values.identifier.split(".")[2] }}.Vaccinations_raw;
