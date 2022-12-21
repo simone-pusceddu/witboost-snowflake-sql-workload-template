@@ -1,4 +1,4 @@
-insert into ${{ values.identifier.split(".")[0] }}.${{ values.identifier.split(".")[1].split("-").join("") }}_${{ values.identifier.split(".")[2] }}.output_table(
+insert into ${{ values.identifier.split(".")[0] }}.${{ values.identifier.split(".")[1].split("-").join("") }}_${{ values.identifier.split(".")[2] }}.vaccinations_clean(
     date,
     location_key,
     new_persons_vaccinated,
