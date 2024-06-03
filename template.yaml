@@ -3,7 +3,8 @@ kind: Template
 metadata:
   name: aws-workload-snowflake-sql-template.1
   title: Snowflake SQL Workload
-  description: Defines the SQL file that will transform the data inside a Snowflake environment handled by MWAA
+  description: Defines the SQL file that will transform the data inside a
+    Snowflake environment handled by MWAA
   mesh:
     icon: https://images.peerspot.com/image/upload/c_scale,f_auto,q_auto,w_200/n6s4iaqxu28b48836wzu0qr31g18.png
   tags:
@@ -12,9 +13,9 @@ metadata:
     - snowflake
     - workload
 spec:
+  generates: componenttype:default/workload
   owner: agilelab
   type: workload
-
   parameters:
     - title: Component basic information
       required:
@@ -46,7 +47,7 @@ spec:
           ui:field: EntityPicker
           ui:options:
             allowArbitraryValues: false
-            allowedKinds: 
+            allowedKinds:
               - Domain
         dataproduct:
           title: Data Product
@@ -58,12 +59,15 @@ spec:
               entityPath: spec.domain
           ui:options:
             allowArbitraryValues: false
-            allowedKinds: 
+            allowedKinds:
               - System
         identifier:
           title: Identifier
           type: string
-          description: A unique identifier for the entity inside the domain. It will not be editable aftrer creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
+          description: A unique identifier for the entity inside the domain. It will not
+            be editable aftrer creation and is expected to be a string that is
+            sequences of [a-zA-Z] separated by any of [-_]. An example could be
+            'finance-customer'
           ui:field: ComponentIdentifierPicker
           ui:options:
             allowArbitraryValues: false
@@ -94,8 +98,8 @@ spec:
           items:
             type: string
             ui:field: ReadsFromPicker
-          description: This is filled only for DataPipeline workloads and it represents the list of output ports or external systems that is reading
-
+          description: This is filled only for DataPipeline workloads and it represents
+            the list of output ports or external systems that is reading
     - title: SQL file details
       required:
         - sqlName
@@ -103,56 +107,59 @@ spec:
         sqlName:
           title: Snowflake SQL file name
           type: string
-          description: Name of the .sql file located in the artifacts/ folder of the component
+          description: Name of the .sql file located in the artifacts/ folder of the
+            component
           default: snowflake.sql
-
   steps:
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: '.'
+        targetPath: .
         values:
-          name: '${{ parameters.name }}'
-          fullyQualifiedName: '${{ parameters.fullyQualifiedName }}'
-          description: '${{ parameters.description }}'
-          domain: '${{ parameters.domain }}'
-          dataproduct: '${{ parameters.dataproduct }}'
-          identifier: '${{ parameters.identifier }}'
-          developmentGroup: '${{ parameters.developmentGroup }}'
-          dependsOn: '${{ parameters.dependsOn }}'
-          readsFrom: '${{ parameters.readsFrom }}'
-          sqlName: '${{ parameters.sqlName }}'
+          name: ${{ parameters.name }}
+          fullyQualifiedName: ${{ parameters.fullyQualifiedName }}
+          description: ${{ parameters.description }}
+          domain: ${{ parameters.domain }}
+          dataproduct: ${{ parameters.dataproduct }}
+          identifier: ${{ parameters.identifier }}
+          developmentGroup: ${{ parameters.developmentGroup }}
+          dependsOn: ${{ parameters.dependsOn }}
+          readsFrom: ${{ parameters.readsFrom }}
+          sqlName: ${{ parameters.sqlName }}
           useCaseTemplateId: urn:dmb:utm:aws-workload-snowflake-sql-template:0.0.0
           infrastructureTemplateId: urn:dmb:itm:aws-workload-snowflake-sql-provisioner:0
           useCaseTemplateVersion: 0.0.0
-          repoUrl: 'gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}&repo=${{ parameters.name.split(" ") | join("") | lower }}'
-          rootDirectory: '.'
-          displayName: '${{ parameters.displayName }}'
-
-
+          repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
+            parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
+            parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
+            }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+          rootDirectory: .
+          displayName: ${{ parameters.displayName }}
     - id: publish
       name: Publish
       action: witboostMeshComponent:publish:gitlab
       input:
-        allowedHosts: ['gitlab.com']
-        description: 'This is ${{ parameters.name }}'
-        repoUrl: 'gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}&repo=${{ parameters.name.split(" ") | join("") | lower }}'
-        rootDirectory: '.'
-        dataproduct: '${{ parameters.dataproduct }}'
-
+        allowedHosts:
+          - gitlab.com
+        description: This is ${{ parameters.name }}
+        repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
+          parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
+          parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
+          }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+        rootDirectory: .
+        dataproduct: ${{ parameters.dataproduct }}
     - id: register
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: '${{ steps.publish.output.repoContentsUrl }}'
-        catalogInfoPath: '/catalog-info.yaml'
-
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
   output:
     links:
       - title: Repository
-        url: '${{ steps.publish.output.remoteUrl }}'
+        url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
-        entityRef: '${{ steps.register.output.entityRef }}'
+        entityRef: ${{ steps.register.output.entityRef }}
