@@ -32,10 +32,6 @@ spec:
           default: Snowflake SQL Workload
           ui:options:
             allowArbitraryValues: true
-        fullyQualifiedName:
-          title: Fully Qualified Name
-          type: string
-          description: Workload fully qualified name
         description:
           title: Description
           type: string
@@ -100,6 +96,24 @@ spec:
             ui:field: ReadsFromPicker
           description: This is filled only for DataPipeline workloads and it represents
             the list of output ports or external systems that is reading
+
+        domainName:
+          type: string
+          ui:field: EntitySelectionPicker
+          ui:fieldName: domain
+          ui:property: spec.mesh.name
+          ui:options:
+            allowArbitraryValues: false
+          ui:widget: hidden
+        dataproductName:
+          type: string
+          ui:field: EntitySelectionPicker
+          ui:fieldName: dataproduct
+          ui:property: spec.mesh.name
+          ui:options:
+            allowArbitraryValues: false
+          ui:widget: hidden
+
     - title: SQL file details
       required:
         - sqlName
@@ -119,10 +133,11 @@ spec:
         targetPath: .
         values:
           name: ${{ parameters.name }}
-          fullyQualifiedName: ${{ parameters.fullyQualifiedName }}
           description: ${{ parameters.description }}
           domain: ${{ parameters.domain }}
           dataproduct: ${{ parameters.dataproduct }}
+          domainName: ${{ parameters.domainName }}
+          dataproductName: ${{ parameters.dataproductName }}
           identifier: ${{ parameters.identifier }}
           developmentGroup: ${{ parameters.developmentGroup }}
           dependsOn: ${{ parameters.dependsOn }}
