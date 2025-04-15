@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: aws-workload-snowflake-sql-template.1
-  title: Snowflake SQL Workload
+  name: aws-workload-snowflake-sql-template-skeleton
+  title: Snowflake SQL Workload (Skeleton)
   description: Defines the SQL file that will transform the data inside a
     Snowflake environment handled by MWAA
   mesh:
